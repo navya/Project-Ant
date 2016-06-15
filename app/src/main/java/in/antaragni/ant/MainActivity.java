@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             .build();
     CLIENT = new GoogleApiClient.Builder(this)
             .enableAutoManage(this, this)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build();
     // Handle Toolbar
     mtoolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -79,14 +80,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
       .withTranslucentStatusBar(false)
       .withActionBarDrawerToggleAnimated(true)
       .addDrawerItems(
-              new PrimaryDrawerItem().withName(getIntent().getExtras().getString("username")),
+
         new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(HOME),
         new PrimaryDrawerItem().withName(R.string.drawer_item_schedule).withIcon(FontAwesome.Icon.faw_calendar).withIdentifier(SCHEDULE),
         new PrimaryDrawerItem().withName(R.string.drawer_item_events).withIcon(FontAwesome.Icon.faw_eye).withIdentifier(EVENTS),
         new PrimaryDrawerItem().withName(R.string.drawer_item_maps).withIcon(FontAwesome.Icon.faw_map_marker).withIdentifier(MAP),
         new PrimaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_users).withIdentifier(CONTACT),
         new PrimaryDrawerItem().withName(R.string.drawer_item_about).withIcon(FontAwesome.Icon.faw_book).withIdentifier(ABOUT),
-              new PrimaryDrawerItem().withName("SignOut").withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT))
+              new PrimaryDrawerItem().withName("SignOut").withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT),
+              new PrimaryDrawerItem().withName(getIntent().getExtras().getString("username")))
       .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
       {
         @Override
