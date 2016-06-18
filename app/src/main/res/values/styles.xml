@@ -50,6 +50,7 @@
     <item name="android:paddingTop">@dimen/carddemo_keyline_1_minus_8dp</item>
     <item name="android:paddingBottom">@dimen/carddemo_keyline_1_minus_8dp</item>
   </style>
+
   <!-- Activity with no Title -->
   <style name="ThemeOverlay.MyNoTitleActivity" parent="AppTheme">
     <item name="windowActionBar">false</item>
