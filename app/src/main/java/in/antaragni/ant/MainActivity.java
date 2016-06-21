@@ -1,5 +1,6 @@
 package in.antaragni.ant;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -70,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     // Handle Toolbar
     mtoolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(mtoolbar);
-
     //Create the drawer
     result = new DrawerBuilder(this)
       //this layout have to contain child layouts
@@ -86,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
               new PrimaryDrawerItem().withName(R.string.drawer_item_maps).withIcon(FontAwesome.Icon.faw_map_marker).withIdentifier(MAP),
               new PrimaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_users).withIdentifier(CONTACT),
               new PrimaryDrawerItem().withName(R.string.drawer_item_about).withIcon(FontAwesome.Icon.faw_book).withIdentifier(ABOUT),
-              new PrimaryDrawerItem().withName(R.string.drawer_item_signout).withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT), new PrimaryDrawerItem().withName(getIntent().getExtras().getString("username")))
+              new PrimaryDrawerItem().withName(R.string.drawer_item_signout).withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT),
+              new PrimaryDrawerItem().withName(getIntent().getExtras().getString("username")))
               .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
       {
         @Override
@@ -178,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     if (VenueName != null)
       startMap(VenueName, true);
   }
-
   public void init()
   {
 
