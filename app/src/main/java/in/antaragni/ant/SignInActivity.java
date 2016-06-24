@@ -63,7 +63,6 @@ public class SignInActivity extends AppCompatActivity implements
         // [END build_client]
 
 
-
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
 
@@ -131,8 +130,8 @@ public class SignInActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
 
             GoogleSignInAccount acct = result.getSignInAccount();
-            username=getString(R.string.signed_in_fmt, acct.getDisplayName());
-            dp=acct.getPhotoUrl();
+            username = getString(R.string.signed_in_fmt, acct.getDisplayName());
+            dp = acct.getPhotoUrl();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
 
@@ -154,8 +153,8 @@ public class SignInActivity extends AppCompatActivity implements
 
     public void init() {
         Intent toy = new Intent(SignInActivity.this, MainActivity.class);
-        toy.putExtra("username",username);
-        toy.putExtra("image",dp);
+        toy.putExtra("username", username);
+        toy.putExtra("image", dp);
         startActivity(toy);
     }
 
