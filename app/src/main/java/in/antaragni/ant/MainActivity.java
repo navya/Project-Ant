@@ -28,8 +28,12 @@ import com.google.android.gms.common.api.Status;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialdrawer.util.KeyboardUtil;
 
@@ -59,14 +63,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public static String EXTRA_ACTION = "action";
     public Snackbar mSnackBar;
     public AlertDialog alertDialog;
-    public TextView username;//added
-    public ImageView image;
+    public String username;
+    public Uri image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        username = getIntent().getExtras().getString("username");
+        image = getIntent().getData();
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(username).withIcon(image)
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
 
+//Now create your drawer and pass the AccountHeader.Result
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -74,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         // Handle Toolbar
         mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
@@ -81,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         result = new DrawerBuilder(this)
                 //this layout have to contain child layouts
                 .withRootView(R.id.drawer_container)
+                .withAccountHeader(headerResult)
                 .withToolbar(mtoolbar)
                 .withTranslucentStatusBar(false)
                 .withActionBarDrawerToggleAnimated(true)
@@ -92,8 +115,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         new PrimaryDrawerItem().withName(R.string.drawer_item_maps).withIcon(FontAwesome.Icon.faw_map_marker).withIdentifier(MAP),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_users).withIdentifier(CONTACT),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_about).withIcon(FontAwesome.Icon.faw_book).withIdentifier(ABOUT),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_signout).withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT),
-                        new PrimaryDrawerItem().withName(getIntent().getExtras().getString("username")))
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_signout).withIcon(FontAwesome.Icon.faw_sign_out).withIdentifier(SIGNOUT))
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(AdapterView<?> parent, View view, int position,
@@ -164,11 +186,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String VenueName = intent.getStringExtra(EXTRA_ACTION);
         if (VenueName != null)
             startMap(VenueName, true);
-
-        Uri dp = intent.getParcelableExtra("image");
         //String UserId = getIntent().getExtras().getString("username");
         //username.setText(UserId);
-        image.setImageURI(dp);
     }
 
     public void init() {

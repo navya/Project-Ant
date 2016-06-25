@@ -2,6 +2,7 @@ package in.antaragni.ant;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class SignInActivity extends AppCompatActivity implements
     public Button result;
     public String username;
     public Uri dp;
+    public Drawable d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +156,7 @@ public class SignInActivity extends AppCompatActivity implements
     public void init() {
         Intent toy = new Intent(SignInActivity.this, MainActivity.class);
         toy.putExtra("username", username);
-        toy.putExtra("image", dp);
+        toy.setData(dp);
         startActivity(toy);
     }
 
