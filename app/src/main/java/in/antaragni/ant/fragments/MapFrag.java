@@ -23,7 +23,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -35,9 +35,10 @@ import in.antaragni.ant.datahandler.DatabaseAccess;
 import in.antaragni.ant.datamodels.Venue;
 
 
-public class MapFragment extends Fragment implements
+public class MapFrag extends Fragment implements
   GoogleApiClient.ConnectionCallbacks,
   GoogleApiClient.OnConnectionFailedListener,
+  OnMapReadyCallback,
   LocationListener
 {
   private GoogleMap map;
@@ -46,9 +47,9 @@ public class MapFragment extends Fragment implements
   private GoogleApiClient mGoogleApiClient;
   private LocationRequest mLocationRequest;
 
-  public static MapFragment newInstance(String title)
+  public static MapFrag newInstance(String title)
   {
-    MapFragment f = new MapFragment();
+    MapFrag f = new MapFrag();
     Bundle args = new Bundle();
 
     args.putString("venue", title);
@@ -67,7 +68,9 @@ public class MapFragment extends Fragment implements
     View v = inflater.inflate(R.layout.fragment_map, container, false);
     Bundle arguments = getArguments();
     String title = arguments.getString("venue");
-    map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frag_map)).getMap();
+    MapFrag mapFrag = (MapFrag) getFragmentManager()
+        .findFragmentById(R.id.frag_map);
+    map= mapFrag.getMapAsync(this);
     map.getUiSettings().setMapToolbarEnabled(false);
     map.setMyLocationEnabled(true);
 
@@ -189,7 +192,12 @@ public class MapFragment extends Fragment implements
     return v;
   }
 
-
+  @Override
+  public void onMapReady(GoogleMap map) {
+    map.addMarker(new MarkerOptions()
+        .position(new LatLng(0, 0))
+        .title("Marker"));
+  }
 
 
   private boolean isGooglePlayServicesAvailable() {
