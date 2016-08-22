@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -68,9 +69,9 @@ public class MapFrag extends Fragment implements
     View v = inflater.inflate(R.layout.fragment_map, container, false);
     Bundle arguments = getArguments();
     String title = arguments.getString("venue");
-    MapFrag mapFrag = (MapFrag) getFragmentManager()
+    SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
         .findFragmentById(R.id.frag_map);
-    map= mapFrag.getMapAsync(this);
+    mapFragment.getMapAsync(this);
     map.getUiSettings().setMapToolbarEnabled(false);
     map.setMyLocationEnabled(true);
 

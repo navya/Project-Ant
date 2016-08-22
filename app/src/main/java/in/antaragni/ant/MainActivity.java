@@ -19,6 +19,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikepenz.iconics.typeface.FontAwesome;
@@ -37,7 +38,7 @@ import in.antaragni.ant.fragments.AboutFragment;
 import in.antaragni.ant.fragments.ContactFragment;
 import in.antaragni.ant.fragments.EventFragment;
 import in.antaragni.ant.fragments.HomeFragment;
-import in.antaragni.ant.fragments.MapFragment;
+import in.antaragni.ant.fragments.MapFrag;
 import in.antaragni.ant.fragments.ScheduleFragment;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             } else if (drawerItem.getIdentifier() == MAP)
             {
               getSupportActionBar().setTitle(((Nameable) drawerItem).getNameRes());
-              f = MapFragment.newInstance(null);
+              f = MapFrag.newInstance(null);
               getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).commit();
             } else if (drawerItem.getIdentifier() == CONTACT)
             {
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
   {
     result.setSelection(3);
     getSupportActionBar().setTitle("Map");
-    f = MapFragment.newInstance(v);
+    f = MapFrag.newInstance(v);
     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).commit();
   }
 
