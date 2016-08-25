@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-
+import com.facebook.FacebookSdk;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,7 +41,8 @@ import in.antaragni.ant.fragments.HomeFragment;
 import in.antaragni.ant.fragments.MapFrag;
 import in.antaragni.ant.fragments.ScheduleFragment;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
+public class
+MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
 {
   protected static int HOME = 1;
   protected static int SCHEDULE = 2;

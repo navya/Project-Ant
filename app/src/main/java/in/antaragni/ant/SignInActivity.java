@@ -11,7 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -37,14 +43,41 @@ public class SignInActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
+    private Button bg;
     public Button result;
     public String username;
     public Uri dp;
     public Drawable d;
+    CallbackManager callbackManager;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //facebook
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Intent t = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(t);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+
+
         setContentView(R.layout.activity_sign_in);
         // [START configure_signin]l
         // Configure sign-in to request the user's ID, email address, and basic
@@ -65,10 +98,13 @@ public class SignInActivity extends AppCompatActivity implements
         // [END build_client]
 
 
+
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
         // Button listeners
+
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.login_button).setOnClickListener(this);
 
         // [START customize_button]
         // Customize sign-in button. The sign-in button can be displayed in
@@ -79,10 +115,13 @@ public class SignInActivity extends AppCompatActivity implements
         // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        bg = (Button)findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
         // [END customize_button]
+
     }
+
 
     @Override
     public void onStart() {
@@ -114,7 +153,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -157,20 +196,6 @@ public class SignInActivity extends AppCompatActivity implements
         startActivity(i);
     }
 
-    // [START revokeAccess]
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
-    }
-    // [END revokeAccess]
-
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
@@ -206,7 +231,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.sign_in_button:
                 signIn();
                 break;
-
         }
     }
 }
