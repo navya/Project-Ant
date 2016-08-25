@@ -58,5 +58,7 @@ dependencies {
   compile 'com.google.android.gms:play-services-auth:9.2.1'
   //for gcm
   compile 'com.google.android.gms:play-services-gcm:9.2.1'
+  //for facebook
+  compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 apply plugin: 'com.google.gms.google-services'
